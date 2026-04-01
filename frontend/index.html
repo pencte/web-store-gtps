@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>GTPS Store</title>
+</head>
+
+<body>
+
+<h2>GTPS STORE</h2>
+
+<button onclick="buy('VIP',10000)">VIP</button>
+<button onclick="buy('100 WL',5000)">100 WL</button>
+
+<div id="popup" style="display:none;">
+  <input id="username" placeholder="Username">
+  <input type="file" id="bukti">
+  <button onclick="kirim()">Kirim</button>
+</div>
+
+<script>
+let item, price;
+
+// 🔁 GANTI DENGAN NGROK / VPS
+const API = "https://YOUR-NGROK-URL.ngrok.io";
+
+function buy(i,p){
+  item=i; price=p;
+  document.getElementById("popup").style.display="block";
+}
+
+async function kirim(){
+  let username = document.getElementById("username").value;
+  let file = document.getElementById("bukti").files[0];
+
+  let form = new FormData();
+  form.append("username", username);
+  form.append("item", item);
+  form.append("price", price);
+  form.append("bukti", file);
+
+  await fetch(API + "/order", {
+    method:"POST",
+    body:form
+  });
+
+  alert("Terkirim!");
+}
+</script>
+
+</body>
+</html>
